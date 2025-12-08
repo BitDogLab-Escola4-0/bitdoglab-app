@@ -8,6 +8,7 @@ import { BackButtonHandler } from "./components/BackButtonHandler";
 // Importações das páginas
 import SplashScreen from "./pages/SplashScreen";
 import Welcome from "./pages/Welcome";
+import RGBLearn from "./pages/OficinaRGB";
 import Connection from "./pages/Connection";
 import Components from "./pages/Components";
 import NotFound from "./pages/NotFound";
@@ -64,6 +65,7 @@ export function App() {
         <Routes>
           <Route path="/" element={<SplashScreen />} />
           <Route path="/welcome" element={<Welcome />} />
+          <Route path="/oficina-rgb" element={<RGBLearn />} />
           <Route path="/connection" element={<Connection />} />
 
           {/* Rota pai apenas para organização (não renderiza conteúdo) */}

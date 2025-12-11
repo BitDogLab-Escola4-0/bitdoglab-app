@@ -28,13 +28,11 @@ def controller_ledRGB(pinR, pinG, pinB, colorR, colorG, colorB):
 #   Buzzer A
 # ======================================================================
 
-def controller_Buzzer(pinBuzzer, freq, intensity):
-
+def controller_buzzer(pinBuzzer, freq, intensity):
     pwm = PWM(pinBuzzer)
     pwm.freq(freq)
     pwm.duty_u16(intensity)
-    return pwm    # retorna objeto para desligar depois se quiser
-
+    return pwm    
 
 # ======================================================================
 #   Matriz de LEDs Neopixel 5x5
@@ -45,11 +43,6 @@ def init_matrix(pin, num_leds=25):
     return np
 
 def map_numbers(num=25):
-    """
-    Mapeia os números dos pixels para o hardware específico (BitDogLab v7).
-    Em Python, 'dicionario.get(chave, padrao)' é o equivalente
-    ao 'swapMap[num] ?? num' do TypeScript.
-    """
     swap_map = {
         0: 4, 4: 0,
         1: 3, 3: 1,
@@ -76,29 +69,73 @@ def controller_neopixel(np, string):
     np.write()
 
 def clear_matrix(np):
-    """Função bônus para limpar a matriz."""
     np.fill((0, 0, 0))
     np.write()
 
 # ======================================================================
-#   I2c e OLED
+#   I2C e OLED
 # ======================================================================
 
-
-
+def init_oled(sda_pin=14, scl_pin=15):
+    i2c = SoftI2C(sda=Pin(sda_pin), scl=Pin(scl_pin), freq=400000)
+    oled = SSD1306_I2C(128, 64, i2c)
+    oled.fill(0)
+    oled.text("OLED Pronto!", 0, 0)
+    oled.show()
+    return oled
 
 # ======================================================================
 #   Botões
 # ======================================================================
 
+def init_buttons(pinA, pinB, pinC):
+    btnA = Pin(pinA, Pin.IN, Pin.PULL_UP)
+    btnB = Pin(pinB, Pin.IN, Pin.PULL_UP)
+    btnC = Pin(pinC, Pin.IN, Pin.PULL_UP)
+    return btnA, btnB, btnC
 
+def button_pressed(btn, debounce_time=150):
+    if btn.value() == 0:  # pressionado
+        time.sleep_ms(debounce_time)
+        return btn.value() == 0
+    return False
 
 # ======================================================================
 #   Joystick
 # ======================================================================
+def init_joystick(pinX, pinY, pinSW):
+    joyX = ADC(Pin(pinX))
+    joyY = ADC(Pin(pinY))
+    joySW = Pin(pinSW, Pin.IN, Pin.PULL_UP)
+    return joyX, joyY, joySW
 
 
+def read_joystick(joyX, joyY, joySW):
+    return joyX.read_u16(), joyY.read_u16(), (joySW.value() == 0)
+
+def read_joystick_direction(joyX, joyY, threshold=6000):
+    x = joyX.read_u16()
+    y = joyY.read_u16()
+
+    center = 32768  # valor teórico, com margem
+
+    if x < center - threshold:
+        return "LEFT"
+    elif x > center + threshold:
+        return "RIGHT"
+    elif y < center - threshold:
+        return "UP"
+    elif y > center + threshold:
+        return "DOWN"
+    else:
+        return "CENTER"
 
 # ======================================================================
 #   Microfone
 # ======================================================================
+
+def init_mic(pinMic):
+    return ADC(Pin(pinMic))
+
+def read_mic(ADC_mic):
+    return ADC_mic.read_u16()

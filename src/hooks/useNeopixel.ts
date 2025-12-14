@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { NeopixelController } from "../builder/constroct buiders/neopixelController";
+import { NeopixelController } from "../builder/constroctbuiders/neopixelController";
 import type { RGB } from "@/types/rgb";
 import { rgbToString, stringToRgb } from "@/types/rgb";
 

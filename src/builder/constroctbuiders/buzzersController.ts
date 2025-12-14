@@ -1,4 +1,4 @@
-import { toMicropython } from "../product/toMicropython";
+import { toMicropython } from "../MicroPythonDirector";
 
 export interface BuzzersData {
   isPressed: boolean;
@@ -50,7 +50,7 @@ export class BuzzersController {
 
     try {
       await this.setupBuzzer();
-      const micropythonCommands = toMicropython(json);
+      const micropythonCommands = toMicropython(json, this.sendCommand);
 
       for (const command of micropythonCommands) {
         await this.sendCommand(command);
@@ -74,7 +74,7 @@ export class BuzzersController {
 
     try {
       // Garante que o comando de parada seja enviado
-      const micropythonCommands = toMicropython(json);
+      const micropythonCommands = toMicropython(json, this.sendCommand);
 
       // Reduz o delay entre comandos para garantir resposta mais rápida
       for (const command of micropythonCommands) {

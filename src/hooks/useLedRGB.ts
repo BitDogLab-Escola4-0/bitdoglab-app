@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { LedRGBController } from "../builder/constroctbuiders/ledRGBControler";
+//import { LedRGBController } from "../builder/constroctbuiders/ledRGBControler";
 import type { RGB } from "@/types/rgb";
+import { toMicropython } from "@/builder/MicroPythonDirector";
 
 /**
  * Custom hook to manage LED state and control
@@ -10,8 +11,8 @@ import type { RGB } from "@/types/rgb";
 export const useLedRGB = (
 	sendCommand: (command: string) => Promise<void>
 ) => {
-	const ledRGBController = useRef<LedRGBController | null>(null);
-	const hasInitialized = useRef(false);
+	//const ledRGBController = useRef<LedRGBController | null>(null);
+	//const hasInitialized = useRef(false);
 
 	// RGB color values for the currently selected LED
 	const [rgb, setRgb] = useState<RGB>({ r: 0, g: 0, b: 0 });
@@ -20,12 +21,13 @@ export const useLedRGB = (
 	const currentColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 
 	// Inicie o ledRGB pela primeira vez
-	useEffect(() => {
-		if (hasInitialized.current) return;
-		hasInitialized.current = true;
+	//useEffect(() => {
+	//	if (hasInitialized.current) return;
+	//	hasInitialized.current = true;
 
-		ledRGBController.current = new LedRGBController(sendCommand);
-	}, [sendCommand]);
+	//	//ledRGBController.current = new LedRGBController(sendCommand);
+	//	toMicropython(sendCommand);
+	//}, [sendCommand]);
 
 	/**
 	 * Reset the color to black (off state)
@@ -58,7 +60,8 @@ export const useLedRGB = (
 	const handleSend = async () => {
 		try {
 			const json = handleSendL();
-			await ledRGBController.current?.sendLEDConfigurations(json);
+			const result = toMicropython(json, sendCommand);
+			console.log(result);
 		} catch (error) {
 			console.error("Erro ao configurar Led:", error);
 		}

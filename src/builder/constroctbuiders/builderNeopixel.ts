@@ -11,8 +11,8 @@ export function builderNeopixel(instructions: { pos: string, cor: string }[]): s
 
     const micropythonCommands = [
         "from Functions import init_matrix, controller_neopixel, clear_matrix",
-        "from board_pinsV7 import Pin_LedR, Pin_LedG, Pin_LedB",
-        "np = init_matrix()",
+        "from board_pinsV7 import Pin_Matriz",
+        "np = init_matrix(Pin_Matriz)",
         "clear_matrix(np)",
         `controller_neopixel(np, ${res})`,
     ];

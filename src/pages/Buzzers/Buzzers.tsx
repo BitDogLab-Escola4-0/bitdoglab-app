@@ -4,7 +4,7 @@ import { Header } from "@/components/Header";
 import Slider from "@/components/Slider";
 import { useBuzzers } from "@/hooks/useBuzzers";
 import Piano from "@/components/Piano";
-import { playbackBuzzerSequence } from "@/builder/constroct buiders/playbackBuzzer";
+import { playbackBuzzerSequence } from "@/builder/constroctbuiders/playbackBuzzer";
 import SaveModal from "@/components/SaveModal";
 import LoadManageModal from "@/components/LoadManageModal";
 import { Square, Music } from "lucide-react";

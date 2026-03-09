@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react";
-import { NeopixelController } from "../builder/constroct buiders/neopixelController";
+import { useEffect, useState } from "react";
+//import { NeopixelController } from "../builder/constroctbuiders/neopixelController";
 import type { RGB } from "@/types/rgb";
 import { rgbToString, stringToRgb } from "@/types/rgb";
+import { toMicropython } from "@/builder/MicroPythonDirector";
 
 /**
  * Custom hook to manage Neopixel LED matrix state and control
@@ -14,8 +15,8 @@ export const useNeopixel = (
 	sendCommand: (command: string) => Promise<void>,
 	totalLEDs: number
 ) => {
-	const neopixelController = useRef<NeopixelController | null>(null);
-	const hasInitialized = useRef(false);
+	//const neopixelController = useRef<NeopixelController | null>(null);
+	//const hasInitialized = useRef(false);
 
 	// RGB color values for the currently selected LED
 	const [rgb, setRgb] = useState<RGB>({ r: 0, g: 0, b: 0 });
@@ -33,12 +34,12 @@ export const useNeopixel = (
 	const [loadManageModalOpen, setLoadManageModalOpen] = useState(false);
 
 	// Initialize the NeopixelController once
-	useEffect(() => {
-		if (hasInitialized.current) return;
-		hasInitialized.current = true;
+	//useEffect(() => {
+	//	if (hasInitialized.current) return;
+	//	hasInitialized.current = true;
 
-		neopixelController.current = new NeopixelController(sendCommand);
-	}, [sendCommand]);
+	//	neopixelController.current = new NeopixelController(sendCommand);
+	//}, [sendCommand]);
 
 	// Update the selected LED's color when RGB values change
 	useEffect(() => {
@@ -98,7 +99,10 @@ export const useNeopixel = (
 				}))
 				.filter(led => led.cor !== 'rgb(0, 0, 0)'); // Only include LEDs that are not black
 
-			await neopixelController.current?.sendLEDConfigurations(activeLeds);
+			const json = JSON.stringify({ neopixel: activeLeds }, null, 3);
+    		console.log(json);
+
+			toMicropython(json, sendCommand);
 		} catch (error) {
 			console.error("Erro ao configurar LEDs:", error);
 		}

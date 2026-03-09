@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 //import { LedRGBController } from "../builder/constroctbuiders/ledRGBControler";
 import type { RGB } from "@/types/rgb";
 import { toMicropython } from "@/builder/MicroPythonDirector";

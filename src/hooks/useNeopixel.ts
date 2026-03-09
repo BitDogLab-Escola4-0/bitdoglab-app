@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 //import { NeopixelController } from "../builder/constroctbuiders/neopixelController";
 import type { RGB } from "@/types/rgb";
 import { rgbToString, stringToRgb } from "@/types/rgb";
@@ -16,7 +16,7 @@ export const useNeopixel = (
 	totalLEDs: number
 ) => {
 	//const neopixelController = useRef<NeopixelController | null>(null);
-	const hasInitialized = useRef(false);
+	//const hasInitialized = useRef(false);
 
 	// RGB color values for the currently selected LED
 	const [rgb, setRgb] = useState<RGB>({ r: 0, g: 0, b: 0 });

@@ -1,7 +1,7 @@
 ## Exemplo de uso da Generic API na main.py:
 
 ```
-from genericAPI import GenericAPI
+from genericAPI.genericAPI import GenericAPI
 
 # 1. Instancia a API (
 bitdoglab = GenericAPI("bitdoglab_v07")

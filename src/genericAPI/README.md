@@ -1,3 +1,26 @@
+## Exemplo de uso da Generic API na main.py:
+
+```
+from genericAPI import GenericAPI
+
+# 1. Instancia a API (
+bitdoglab = GenericAPI("bitdoglab_v07")
+
+# Ligar LED RGB em Vermelho (Max u16)
+bitdoglab.set_rgb(255, 0, 0)
+
+# Tocar um 'Beep'
+bitdoglab.play_tone(440, 100) # Nota Lá
+
+# Acender o LED central da matriz em Verde (RGB 0-255)
+bitdoglab.set_pixel(12, (0, 255, 0))
+
+# Limpar tudo
+# bitdoglab.clear_matrix()
+# bitdoglab.set_rgb(0, 0, 0)
+´´´
+
+
 ========================================
     LED RGB único (PWM) — catodo comum
    - Azul  : GPIO12
@@ -66,3 +89,4 @@ adc_mic = machine.ADC(machine.Pin(28))  # entrada analógica do microfone
 OFFSET   = int(1.65 / 3.3 * 65536)      # 1,65 V referidos a 3,3 V → valor ADC
 
 """
+

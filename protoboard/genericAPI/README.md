@@ -7,7 +7,7 @@ from genericAPI.genericAPI import GenericAPI
 bitdoglab = GenericAPI("bitdoglab_v07")
 
 # Ligar LED RGB em Vermelho (Max u16)
-bitdoglab.set_rgb(65535, 0, 0)
+bitdoglab.set_rgb(255, 0, 0)
 
 # Tocar um 'Beep'
 bitdoglab.play_buzzer(440, 100) # Nota Lá

@@ -36,9 +36,9 @@ async function sendToBoard(commands: string[], sendCommand: SendCommandFn) {
   }
 }
 
-function toMicropython(json: string, sendCommand: (command: string) => Promise<void>){
+async function toMicropython(json: string, sendCommand: (command: string) => Promise<void>){
   const params: [string, unknown] = parse(json);
   const commands = constructer(params[0], params[1]);
-  sendToBoard(commands, sendCommand);
+  await sendToBoard(commands, sendCommand);
   return 'sucesso';
 }

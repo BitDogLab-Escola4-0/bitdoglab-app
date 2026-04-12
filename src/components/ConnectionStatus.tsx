@@ -10,10 +10,8 @@ export const ConnectionStatus = () => {
     if (!isConnected){
      return "Desconectado";
     }
-    if (connectionType === ConnectionType.BLUETOOTH_CLASSIC){
+    if (connectionType === ConnectionType.BLUETOOTH){
       return "Conectado via Bluetooth Clássico"
-    } else if (connectionType === ConnectionType.BLUETOOTH_LE) {
-      return "Conectado via Bluetooth Low Energy"
     } else if (connectionType === ConnectionType.WIFI) {
       return "Conectado via WiFi"
     } else {

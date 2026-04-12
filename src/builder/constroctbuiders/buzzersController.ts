@@ -52,7 +52,7 @@ export class BuzzersController {
       await this.setupBuzzer();
       const micropythonCommands = toMicropython(json, this.sendCommand);
 
-      for (const command of micropythonCommands) {
+      for (const command of await micropythonCommands) {
         await this.sendCommand(command);
         await new Promise((resolve) => setTimeout(resolve, 50));
       }
@@ -77,7 +77,7 @@ export class BuzzersController {
       const micropythonCommands = toMicropython(json, this.sendCommand);
 
       // Reduz o delay entre comandos para garantir resposta mais rápida
-      for (const command of micropythonCommands) {
+      for (const command of await micropythonCommands) {
         await this.sendCommand(command);
         await new Promise((resolve) => setTimeout(resolve, 25)); // Reduz para 25ms
       }

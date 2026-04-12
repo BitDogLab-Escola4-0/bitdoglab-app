@@ -1,20 +1,19 @@
 export function builderNeopixel(instructions: { pos: string, cor: string }[]): string[] {
     // Enviar comandos do Neopixel
-    const res: string[] = [];
+    let res: string = "";
 
     instructions.forEach(dict => {
 		const rgbMatch: string[] = dict.cor.match(/\d+/g) as string[];
 		const rgb: string = rgbMatch.join(', ');
 		const pos: number = mapNumbers(parseInt(dict.pos));
-		res.push(`np[` + pos + `] = (${rgb})`);
+		console.log(`Position: ${pos}, RGB: ${rgb}`);
+		res += `${pos}:${rgb};`;
 	});
 
     const micropythonCommands = [
-        "from Functions import init_matrix, controller_neopixel, clear_matrix",
-        "from board_pinsV7 import Pin_Matriz",
-        "np = init_matrix(Pin_Matriz)",
-        "clear_matrix(np)",
-        `controller_neopixel(np, ${res})`,
+        "from genericAPI.genericAPI import GenericAPI\n",
+        'bitdoglab = GenericAPI("bitdoglab_v07")\n',
+        `bitdoglab.set_neopixel(${res})\n`,
     ];
     console.log(micropythonCommands);
     return micropythonCommands

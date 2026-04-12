@@ -60,7 +60,7 @@ export const useLedRGB = (
 	const handleSend = async () => {
 		try {
 			const json = handleSendL();
-			const result = toMicropython(json, sendCommand);
+			const result = await toMicropython(json, sendCommand);
 			console.log(result);
 		} catch (error) {
 			console.error("Erro ao configurar Led:", error);

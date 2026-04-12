@@ -5,7 +5,7 @@ export function builderNeopixel(instructions: { pos: string, cor: string }[]): s
     instructions.forEach(dict => {
 		const rgbMatch: string[] = dict.cor.match(/\d+/g) as string[];
 		const rgb: string = rgbMatch.join(', ');
-		const pos: number = mapNumbers(parseInt(dict.pos));
+		const pos: number = parseInt(dict.pos);
 		console.log(`Position: ${pos}, RGB: ${rgb}`);
 		res += `${pos}:${rgb};`;
 	});
@@ -13,13 +13,14 @@ export function builderNeopixel(instructions: { pos: string, cor: string }[]): s
     const micropythonCommands = [
         "from genericAPI.genericAPI import GenericAPI\n",
         'bitdoglab = GenericAPI("bitdoglab_v07")\n',
-        `bitdoglab.set_neopixel(${res})\n`,
+		'intructions = """' + res + '"""\n',
+        `bitdoglab.set_neopixel(intructions)\n`,
     ];
     console.log(micropythonCommands);
     return micropythonCommands
 }
 
-function mapNumbers(num: number): number {
+/*function mapNumbers(num: number): number {
 	const swapMap: Record<number, number> = {
 		0: 4, 4: 0,
 		1: 3, 3: 1,
@@ -30,4 +31,4 @@ function mapNumbers(num: number): number {
 	};
 
 	return swapMap[num] ?? num;
-}
+}*/

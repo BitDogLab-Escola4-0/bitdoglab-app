@@ -73,18 +73,8 @@ export default function Connection() {
     connectCable,
     connectBluetoothClassic,
     connectBluetoothLE,
-    connectWifi,          // 🆕
+    connectWifi,
     disconnect,
-    //scanBluetoothDevices,
-    //scanBleDevices,
-    //availableDevices,
-    //bleDevices,
-    //isBleScanning,
-    bleError,
-    clearBleError,
-    wifiLogs,             // 🆕
-    wifiError,
-    clearWifiError,       // 🆕
   } = useConnection();
 
   const [state, setState] = useState<ConnectionState>(INITIAL_STATE);
@@ -95,9 +85,7 @@ export default function Connection() {
 
   const clearError = useCallback(() => {
     updateState({ error: null });
-    clearBleError();
-    clearWifiError(); // 🆕 limpa erros WiFi também
-  }, [updateState, clearBleError, clearWifiError]);
+  }, [updateState]);
 
   // 🔄 Conectar de acordo com o tipo
   const handleConnect = useCallback(async () => {
@@ -216,18 +204,6 @@ export default function Connection() {
         />
 
       </div>
-      {wifiError && (
-        <div className="text-sm text-red-600 bg-red-50 p-2 rounded mb-2">
-          ⚠️ {wifiError}
-        </div>
-      )}
-      {wifiLogs.length > 0 && (
-        <div className="bg-gray-50 border rounded p-2 max-h-32 overflow-y-auto text-xs font-mono">
-          {wifiLogs.map((log, i) => (
-            <div key={i}>📡 {log}</div>
-          ))}
-        </div>
-      )}
     </div>
   );
 
@@ -272,9 +248,9 @@ export default function Connection() {
 
       {state.selectedConnectionType === "wifi" && renderWifiSection()}
 
-      {(state.error || bleError) && (
+      {state.error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {state.error || bleError}
+          {state.error}
         </div>
       )}
 

@@ -92,3 +92,4 @@ class GenericAPI:
             self.matrix[i] = (0, 0, 0)
         if update:
             self.matrix.write()
+

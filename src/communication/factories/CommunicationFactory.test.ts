@@ -4,11 +4,11 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { CommunicationFactory, ConnectionType } from "./factories/CommunicationFactory";
-import { CableProvider } from "./providers/CableProvider";
-import { BleProvider } from "./providers/BleProvider";
-import { WifiProvider } from "./providers/WifiProvider";
-import { ClassicBluetoothProvider } from "./providers/ClassicBluetoothProvider";
+import { CommunicationFactory, ConnectionType } from "../factories/CommunicationFactory";
+import { CableProvider } from "../providers/CableProvider";
+import { BleProvider } from "../providers/BleProvider";
+import { WifiProvider } from "../providers/WifiProvider";
+import { ClassicBluetoothProvider } from "../providers/ClassicBluetoothProvider";
 
 describe("CommunicationFactory", () => {
   describe("createProvider", () => {

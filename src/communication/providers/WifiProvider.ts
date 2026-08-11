@@ -11,7 +11,7 @@ export class WifiProvider implements IConnectionProvider {
   private onDataCallback: ((data: string) => void) | null = null;
   private onErrorCallback: ((error: Error) => void) | null = null;
 
-  constructor(ip: string = "192.168.1.100", port: number = 8080) {
+  constructor(ip: string = "192.168.4.1", port: number = 8080) {
     this.ip = ip;
     this.port = port;
   }
@@ -22,34 +22,33 @@ export class WifiProvider implements IConnectionProvider {
 
       this.websocket = new WebSocket(url);
 
-      this.websocket.onopen = () => {
-        this.isConnectedFlag = true;
-      };
-
       this.websocket.onmessage = (event) => {
         this.onDataCallback?.(event.data);
-      };
-
-      this.websocket.onerror = (error) => {
-        const err = new Error("Erro na conexão WebSocket");
-        this.onErrorCallback?.(err);
       };
 
       this.websocket.onclose = () => {
         this.isConnectedFlag = false;
       };
 
-      // Aguarda a conexão ser estabelecida
+      // Aguarda a conexão ser estabelecida (ou falhar antes do timeout)
       await new Promise<void>((resolve, reject) => {
         const timeout = setTimeout(() => {
-          reject(new Error("Timeout na conexão WiFi"));
+          reject(new Error(`Timeout ao conectar em ${this.ip}:${this.port}`));
         }, 5000);
 
-        const originalOnopen = this.websocket!.onopen;
-        this.websocket!.onopen = (event) => {
+        this.websocket!.onopen = () => {
           clearTimeout(timeout);
-          originalOnopen?.call(this.websocket!, event);
+          this.isConnectedFlag = true;
           resolve();
+        };
+
+        this.websocket!.onerror = () => {
+          clearTimeout(timeout);
+          const err = new Error(
+            `Não foi possível conectar em ${this.ip}:${this.port}. Confira se o celular está na rede WiFi da placa.`
+          );
+          this.onErrorCallback?.(err);
+          reject(err);
         };
       });
     } catch (error) {

@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
 import { useNavigate } from "react-router-dom";
-import { useConnection } from "../connection/ConnectionContext";
+import { useConnection, DEFAULT_WIFI_IP, DEFAULT_WIFI_PORT } from "../connection/ConnectionContext";
 import type { BleDevice } from '@capacitor-community/bluetooth-le';
 
 // 🔄 Tipos de conexão expandidos
@@ -26,8 +26,8 @@ const INITIAL_STATE: ConnectionState = {
   scanning: false,
   selectedDevice: null,
   selectedBleDevice: null,
-  wifiIp: "192.168.1.100",
-  wifiPort: "8080",
+  wifiIp: DEFAULT_WIFI_IP,
+  wifiPort: String(DEFAULT_WIFI_PORT),
 };
 
 const MESSAGES = {

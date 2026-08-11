@@ -69,9 +69,11 @@ export class CommunicationFactory {
         return new ClassicBluetoothProvider(config.address as string);
 
       case ConnectionType.WIFI:
-        const ip = config?.ip || "192.168.1.100";
-        const port = config?.port || 8080;
-        return new WifiProvider(ip, port);
+        // Sem ip/port explícitos, o WifiProvider já usa seu próprio default
+        // (192.168.4.1:8080 — IP do Access Point criado pelo Pico W).
+        return config?.ip || config?.port
+          ? new WifiProvider(config?.ip as string, config?.port as number)
+          : new WifiProvider();
 
       default:
         throw new Error(`Tipo de conexão não suportado: ${connectionType}`);

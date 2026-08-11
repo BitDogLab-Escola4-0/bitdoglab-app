@@ -9,8 +9,8 @@ import { BleClient, type BleDevice } from "@capacitor-community/bluetooth-le";
 // Re-exporta ConnectionType da factory como fonte única da verdade
 export { ConnectionType } from "../communication/factories/CommunicationFactory";
 
-const DEFAULT_WIFI_IP = "192.168.1.100";
-const DEFAULT_WIFI_PORT = 8080;
+export const DEFAULT_WIFI_IP = "192.168.4.1"; // IP fixo do Access Point criado pelo Pico W (ver wifi.py -> AP_IP)
+export const DEFAULT_WIFI_PORT = 8080;
 
 interface ConnectionContextType {
   isConnected: boolean;
@@ -276,4 +276,4 @@ export const useConnection = () => {
   const context = useContext(ConnectionContext);
   if (!context) throw new Error("useConnection must be used within a ConnectionProvider");
   return context;
-};
+};""

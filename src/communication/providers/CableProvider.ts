@@ -82,10 +82,11 @@ export class CableProvider implements IConnectionProvider {
 
   private async startReading(): Promise<void> {
     try {
-      this.reader = this.port.readable.getReader();
+      const reader = this.port.readable.getReader();
+      this.reader = reader;
 
       while (this.isConnectedFlag) {
-        const { value, done } = await this.reader.read();
+        const { value, done } = await reader.read();
         if (done) break;
 
         const decoder = new TextDecoder();
@@ -97,6 +98,8 @@ export class CableProvider implements IConnectionProvider {
         const err = error instanceof Error ? error : new Error(String(error));
         this.onErrorCallback?.(err);
       }
+    } finally {
+      this.reader = null;
     }
   }
 }

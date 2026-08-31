@@ -81,7 +81,7 @@ export class ClassicBluetoothProvider implements IConnectionProvider {
     this.onErrorCallback = callback;
   }
 
-  private async createSocket(address: string): Promise<any> {
+  private async createSocket(_address: string): Promise<any> {
     // Implementação específica da API de Bluetooth Clássico
     // Este é um placeholder para a estrutura
     return Promise.resolve({
@@ -95,6 +95,9 @@ export class ClassicBluetoothProvider implements IConnectionProvider {
       // Lógica para leitura contínua de dados
       while (this.isConnectedFlag) {
         // Implementar lógica de leitura
+        if (this.onDataCallback) {
+          // Callback registrado para receber dados
+        }
         await new Promise((resolve) => setTimeout(resolve, 100));
       }
     } catch (error) {

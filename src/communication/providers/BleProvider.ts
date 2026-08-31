@@ -1,6 +1,10 @@
 import type { IConnectionProvider } from "../interfaces/IConnectionProvider";
-import type { BleDevice } from "@capacitor-community/bluetooth-le";
-import { BluetoothLe } from "@capacitor-community/bluetooth-le";
+import {
+  BleClient,
+  textToDataView,
+  dataViewToText,
+  type BleDevice,
+} from "@capacitor-community/bluetooth-le";
 
 /**
  * Provider para conexão via Bluetooth Low Energy (BLE)
@@ -24,9 +28,8 @@ export class BleProvider implements IConnectionProvider {
         throw new Error("Dispositivo BLE não definido");
       }
 
-      await BluetoothLe.connect({
-        deviceId: this.device.deviceId,
-        services: [this.serviceUUID],
+      await BleClient.connect(this.device.deviceId, (_disconnectedDeviceId) => {
+        this.isConnectedFlag = false;
       });
 
       this.isConnectedFlag = true;
@@ -43,9 +46,16 @@ export class BleProvider implements IConnectionProvider {
   async disconnect(): Promise<void> {
     try {
       if (this.device && this.isConnectedFlag) {
-        await BluetoothLe.disconnect({
-          deviceId: this.device.deviceId,
-        });
+        try {
+          await BleClient.stopNotifications(
+            this.device.deviceId,
+            this.serviceUUID,
+            this.rxCharacteristicUUID
+          );
+        } catch {
+          // Ignora se não estava ouvindo notificações
+        }
+        await BleClient.disconnect(this.device.deviceId);
         this.isConnectedFlag = false;
       }
     } catch (error) {
@@ -61,15 +71,12 @@ export class BleProvider implements IConnectionProvider {
         throw new Error("Não conectado ao dispositivo BLE");
       }
 
-      const encoder = new TextEncoder();
-      const encodedString = encoder.encode(command + "\r\n");
-
-      await BluetoothLe.write({
-        deviceId: this.device.deviceId,
-        service: this.serviceUUID,
-        characteristic: this.txCharacteristicUUID,
-        value: encodedString,
-      });
+      await BleClient.write(
+        this.device.deviceId,
+        this.serviceUUID,
+        this.txCharacteristicUUID,
+        textToDataView(command + "\r\n")
+      );
     } catch (error) {
       const err = error instanceof Error ? error : new Error(String(error));
       this.onErrorCallback?.(err);
@@ -97,30 +104,20 @@ export class BleProvider implements IConnectionProvider {
     try {
       if (!this.device) return;
 
-      // Setup listeners para notificações
-      BluetoothLe.onCharacteristicChanged({
-        services: [this.serviceUUID],
-        onCharacteristicChanged: (event) => {
-          const decoder = new TextDecoder();
-          const data = decoder.decode(event.value);
-          this.onDataCallback?.(data);
-        },
-      });
-
       // Ativa notificações no RX characteristic
-      await BluetoothLe.startNotifications({
-        deviceId: this.device.deviceId,
-        service: this.serviceUUID,
-        characteristic: this.rxCharacteristicUUID,
-        onCharacteristicChanged: (event) => {
-          const decoder = new TextDecoder();
-          const data = decoder.decode(event.value);
+      await BleClient.startNotifications(
+        this.device.deviceId,
+        this.serviceUUID,
+        this.rxCharacteristicUUID,
+        (value: DataView) => {
+          const data = dataViewToText(value);
           this.onDataCallback?.(data);
-        },
-      });
+        }
+      );
     } catch (error) {
       const err = error instanceof Error ? error : new Error(String(error));
       this.onErrorCallback?.(err);
     }
   }
 }
+

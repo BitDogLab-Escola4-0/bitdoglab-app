@@ -4,7 +4,10 @@
  */
 
 // Interfaces
-export type { IConnectionProvider } from "./interfaces/IConnectionProvider";
+export type {
+  IConnectionProvider,
+  IConnectionProvider as ConnectionProvider,
+} from "./interfaces/IConnectionProvider";
 
 // Factory
 export {
@@ -18,5 +21,3 @@ export { BleProvider } from "./providers/BleProvider";
 export { ClassicBluetoothProvider } from "./providers/ClassicBluetoothProvider";
 export { WifiProvider } from "./providers/WifiProvider";
 
-// Re-export para facilitar importações
-export type { IConnectionProvider as ConnectionProvider };

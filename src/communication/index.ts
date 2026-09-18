@@ -21,3 +21,5 @@ export { BleProvider } from "./providers/BleProvider";
 export { ClassicBluetoothProvider } from "./providers/ClassicBluetoothProvider";
 export { WifiProvider } from "./providers/WifiProvider";
 
+// Re-export para facilitar importações
+export type { IConnectionProvider as ConnectionProvider };

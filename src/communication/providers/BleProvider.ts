@@ -1,9 +1,9 @@
 import type { IConnectionProvider } from "../interfaces/IConnectionProvider";
+import type { BleDevice } from "@capacitor-community/bluetooth-le";
 import {
   BleClient,
   textToDataView,
   dataViewToText,
-  type BleDevice,
 } from "@capacitor-community/bluetooth-le";
 
 /**
@@ -28,7 +28,8 @@ export class BleProvider implements IConnectionProvider {
         throw new Error("Dispositivo BLE não definido");
       }
 
-      await BleClient.connect(this.device.deviceId, (_disconnectedDeviceId) => {
+      await BleClient.connect(this.device.deviceId, (deviceId) => {
+        console.log(`Dispositivo BLE desconectado: ${deviceId}`);
         this.isConnectedFlag = false;
       });
 
@@ -46,15 +47,11 @@ export class BleProvider implements IConnectionProvider {
   async disconnect(): Promise<void> {
     try {
       if (this.device && this.isConnectedFlag) {
-        try {
-          await BleClient.stopNotifications(
-            this.device.deviceId,
-            this.serviceUUID,
-            this.rxCharacteristicUUID
-          );
-        } catch {
-          // Ignora se não estava ouvindo notificações
-        }
+        await BleClient.stopNotifications(
+          this.device.deviceId,
+          this.serviceUUID,
+          this.rxCharacteristicUUID
+        ).catch(() => {});
         await BleClient.disconnect(this.device.deviceId);
         this.isConnectedFlag = false;
       }
@@ -71,11 +68,13 @@ export class BleProvider implements IConnectionProvider {
         throw new Error("Não conectado ao dispositivo BLE");
       }
 
+      const dataView = textToDataView(command + "\r\n");
+
       await BleClient.write(
         this.device.deviceId,
         this.serviceUUID,
         this.txCharacteristicUUID,
-        textToDataView(command + "\r\n")
+        dataView
       );
     } catch (error) {
       const err = error instanceof Error ? error : new Error(String(error));
@@ -104,7 +103,6 @@ export class BleProvider implements IConnectionProvider {
     try {
       if (!this.device) return;
 
-      // Ativa notificações no RX characteristic
       await BleClient.startNotifications(
         this.device.deviceId,
         this.serviceUUID,

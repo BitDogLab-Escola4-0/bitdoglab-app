@@ -94,9 +94,9 @@ export class ClassicBluetoothProvider implements IConnectionProvider {
     try {
       // Lógica para leitura contínua de dados
       while (this.isConnectedFlag) {
-        // Implementar lógica de leitura
+        // Implementar lógica de leitura quando houver socket real
         if (this.onDataCallback) {
-          // Callback registrado para receber dados
+          // callback placeholder
         }
         await new Promise((resolve) => setTimeout(resolve, 100));
       }

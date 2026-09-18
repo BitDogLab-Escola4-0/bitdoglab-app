@@ -42,8 +42,9 @@ export class WifiProvider implements IConnectionProvider {
           resolve();
         };
 
-        this.websocket!.onerror = () => {
+        this.websocket!.onerror = (event) => {
           clearTimeout(timeout);
+          console.error(`[WifiProvider] Erro ao conectar no WebSocket (${url}):`, event);
           const err = new Error(
             `Não foi possível conectar em ${this.ip}:${this.port}. Confira se o celular está na rede WiFi da placa.`
           );

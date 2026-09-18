@@ -85,13 +85,15 @@ export class CableProvider implements IConnectionProvider {
       const reader = this.port.readable.getReader();
       this.reader = reader;
 
-      while (this.isConnectedFlag) {
+      while (this.isConnectedFlag && this.reader) {
         const { value, done } = await reader.read();
         if (done) break;
 
-        const decoder = new TextDecoder();
-        const data = decoder.decode(value);
-        this.onDataCallback?.(data);
+        if (value) {
+          const decoder = new TextDecoder();
+          const data = decoder.decode(value);
+          this.onDataCallback?.(data);
+        }
       }
     } catch (error) {
       if (this.isConnectedFlag) {

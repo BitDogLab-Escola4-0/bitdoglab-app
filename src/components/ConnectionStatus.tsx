@@ -10,17 +10,14 @@ export const ConnectionStatus = () => {
     if (!isConnected) {
       return "Desconectado";
     }
-    switch (connectionType) {
-      case ConnectionType.BLUETOOTH_CLASSIC:
-        return "Conectado via Bluetooth Clássico";
-      case ConnectionType.BLUETOOTH_LE:
-        return "Conectado via Bluetooth LE";
-      case ConnectionType.WIFI:
-        return "Conectado via WiFi";
-      case ConnectionType.CABLE:
-        return "Conectado via Cabo";
-      default:
-        return "Conectado";
+    if (connectionType === ConnectionType.BLUETOOTH_CLASSIC) {
+      return "Conectado via Bluetooth Clássico";
+    } else if (connectionType === ConnectionType.BLUETOOTH_LE) {
+      return "Conectado via Bluetooth LE";
+    } else if (connectionType === ConnectionType.WIFI) {
+      return "Conectado via WiFi";
+    } else {
+      return "Conectado via Cabo";
     }
   };
 

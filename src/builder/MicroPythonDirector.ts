@@ -1,6 +1,6 @@
-import { builderNeopixel } from './constroctbuiders/builderNeopixel';
-import { builderLedRGB } from './constroctbuiders/builderLedRGB';
-import { interpreterBuzzer } from "./product/interpreters/buzzer";
+import { builderNeopixel } from './constructBuilders/builderNeopixel';
+import { builderLedRGB } from './constructBuilders/builderLedRGB';
+import { builderBuzzer, type BuzzersData } from './constructBuilders/builderBuzzer';
 export { toMicropython };
 
 type SendCommandFn = (command: string) => Promise<void>;
@@ -12,7 +12,7 @@ function constructer(app: string, instructions: unknown): string[] {
 		case 'ledRGB':
 			return builderLedRGB(instructions as string);
 		case 'buzzer':
-			return interpreterBuzzer(instructions as { isPressed: boolean, frequency?: number, duration?: number });
+			return builderBuzzer(instructions as BuzzersData);
 		default: // isso será retirado após todos os apps serem feitos
 			return ["em construcao..."]
 	}

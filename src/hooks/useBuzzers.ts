@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ScreenOrientation } from "@capacitor/screen-orientation";
-import { BuzzersController } from "../builder/constroctbuiders/buzzersController";
+import { BuzzersController } from "../builder/constructBuilders/buzzersController";
 import type { Note } from "../types/notes";
 import { noteToFrequency } from "../types/notes";
 

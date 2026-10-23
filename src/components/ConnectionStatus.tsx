@@ -7,17 +7,17 @@ export const ConnectionStatus = () => {
 
   // Get connection label based on type
   const getConnectionLabel = () => {
-    if (!isConnected){
-     return "Desconectado";
+    if (!isConnected) {
+      return "Desconectado";
     }
-    if (connectionType === ConnectionType.BLUETOOTH_CLASSIC){
-      return "Conectado via Bluetooth Clássico"
+    if (connectionType === ConnectionType.BLUETOOTH_CLASSIC) {
+      return "Conectado via Bluetooth Clássico";
     } else if (connectionType === ConnectionType.BLUETOOTH_LE) {
-      return "Conectado via Bluetooth Low Energy"
+      return "Conectado via Bluetooth LE";
     } else if (connectionType === ConnectionType.WIFI) {
-      return "Conectado via WiFi"
+      return "Conectado via WiFi";
     } else {
-      return "Conectado via Cabo"
+      return "Conectado via Cabo";
     }
   };
 

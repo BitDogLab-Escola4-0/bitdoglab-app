@@ -102,7 +102,7 @@ export const useNeopixel = (
 			const json = JSON.stringify({ neopixel: activeLeds }, null, 3);
     		console.log(json);
 
-			toMicropython(json, sendCommand);
+			await toMicropython(json, sendCommand);
 		} catch (error) {
 			console.error("Erro ao configurar LEDs:", error);
 		}
